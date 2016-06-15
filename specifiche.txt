@@ -1,0 +1,79 @@
+PROGETTO SIW
+CASI D’USO
+CASO D’USO UC1: CONSULTA OFFERTA
+	ATTORE PRIMARIO: utente non registrato
+	SCENARIO PRINCIPALE:
+1.	L’utente vuole consultare gli esami offerti dalla clinica
+2.	L’utente sceglie MOSTRA TIPOLOGIE ESAMI
+3.	L’utente sceglie una tipologia d’esame tra quelle offerte dalla clinica, inserendo il codice
+4.	Il sistema mostra i dettagli  della tipologia di esame scelta dall’utente (nome, descizione costo, prerequisiti)
+L’utente ripete i passi 2-3 finché non ha terminato	
+
+CASO D’USO UC2: CREA ESAME (PRENOTAZIONE)
+              ATTORE PRIMARIO: amministratore
+              SCENARIO PRINCIPALE:
+1.	L’amministratore vuole inserire un nuovo esame
+2.	L’amministratore inserisce il suo codice e la sua password. Il sistema verifica la correttezza dei dati inseriti e autentica l’amministratore visualizzando i suoi dati
+3.	L’amministratore sceglie l’opzione CREA ESAME
+4.	Il sistema mostra l’elenco delle tipologie d’esame selezionabili.
+5.	L’amministratore seleziona una tipologia inserendo il codice. Il sistema mostra i dati della tipologia scelta.
+6.	L’amministratore  inserisce i dati dell’esame e associa un paziente all’esame creato inserendone il codice e il sistema mostra un riepilogo dell’esame 
+7.	L’amministratore conferma la creazione dell’esame e il sistema registra l’esame (impostando automaticamente la data di prenotazione)
+
+L’amministratore ripete i passi 4 all’ 8 finché non indica di aver terminato.
+ESTENSIONI:
+     5-7a: l’amministratore annulla l’operazione di creazione. Il sistema non registra l’esame
+
+
+CASO D’USO UC3:  CONSULTA RISULTATI PROPRIO ESAME
+	ATTORE PRIMARIO: paziente
+	SCENARIO PRINCIPALE:
+1.	Il paziente vuole vedere i risultati di un proprio esame 
+2.	Il paziente inserisce il suo codice e la sua password. Il sistema verifica la correttezza dei dati inseriti e autentica il paziente visualizzando i suoi dati
+3.	Il paziente sceglie ELENCO ESAMI
+4.	Il sistema mostra l’elenco degli esami relativi al paziente
+5.	Il paziente inserisce il codice di un esame. Il sistema visualizza ulteriori informazioni sull’esame scelto (nome, data esame, nome medico, risultati)
+Il paziente ripete il passo 5 finché non indica di aver terminato
+
+
+CASO D’USO UC4: INSERIMENTO TIPOLOGIA ESAME
+	ATTORE PRIMARIO: amministratore
+	SCENARIO PRINCIPALE: 
+1.	L’amministratore vuole inserire una tipologia di esame
+2.	L’amministratore inserisce il suo codice e la sua password. Il sistema verifica la correttezza dei dati inseriti e autentica l’amministratore visualizzando i suoi dati
+3.	L’amministratore sceglie INSERISCI TIPOLOGIA ESAME
+4.	L’amministratore inserisce il nome della tipologia insieme alla descrizione, costo e prerequisiti, il sistema mostra un riepilogo della tipologia
+5.	L’amministratore conferma la creazione della tipologia e il sistema registra la tipologia 
+L’amministratore ripete i passi 4-5 finché non indica di aver terminato
+
+ESTENSIONI: 
+4a: l’amministratore annulla l’operazione di inserimento tipologia esame. Il sistema non registra la tipologia.
+
+CASO D’USO UC5: ESAMI EFFETTUATI DA UN MEDICO
+	ATTORE PRIMARIO: amministratore
+	SCENARIO PRINCIPALE:
+1.	L’amministratore vuole visualizzare gli esami effettuati da un medico
+2.	L’amministratore inserisce il suo codice e la sua password. Il sistema verifica la correttezza dei dati inseriti e autentica l’amministratore visualizzando i suoi dati
+3.	L’amministratore sceglie MOSTRA ESAMI
+4.	L’amministratore inserisce nome e cognome di un medico
+5.	Il sistema mostra l’elenco degli esami relativi a quel medico
+
+CASO D’USO UC6: INSERIMENTO RISULTATI ESAME
+	ATTORE PRINCIPALE: amministratore
+	SCENARIO PRINCIPALE:
+1.	L’amministratore vuole inserire i risultati di un esame
+2.	L’amministratore inserisce il suo codice e la sua password. Il sistema verifica la correttezza dei dati inseriti e autentica l’amministratore visualizzando i suoi dati
+3.	L’amministratore sceglie INSERISCI RISULTATI ESAME
+4.	(L’amministratore sceglie un filtro)
+5.	Il sistema mostra l’elenco degli esami senza risultati
+6.	L’amministratore inserisce il codice dell’esame. Il sistema visualizza ulteriori informazioni sull’esame
+7.	L’amministratore inserisce i risultati dell’esame. Il sistema mostra un riepilogo dell’esame con i risultati
+8.	L’amministratore conferma l’inserimento dei risultati
+
+ESTENSIONI:
+4-6a: l’amministratore annulla l’inserimento dei risultati. Il sistema non registra i risultati.
+
+
+
+
+
