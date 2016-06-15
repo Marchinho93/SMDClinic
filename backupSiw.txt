@@ -1,0 +1,678 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5beta1
+-- Dumped by pg_dump version 9.5beta1
+
+-- Started on 2016-06-15 19:29:57
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 196 (class 3079 OID 12355)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2202 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 185 (class 1259 OID 26296)
+-- Name: administrator; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE administrator (
+    username character varying(255) NOT NULL,
+    code bigint NOT NULL,
+    name character varying(20) NOT NULL,
+    password character varying(255) NOT NULL,
+    surname character varying(20) NOT NULL
+);
+
+
+ALTER TABLE administrator OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 26304)
+-- Name: doctor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE doctor (
+    code bigint NOT NULL,
+    fieldofspecialization character varying(255),
+    name character varying(20) NOT NULL,
+    surname character varying(20) NOT NULL
+);
+
+
+ALTER TABLE doctor OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 26286)
+-- Name: doctorseq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE doctorseq
+    START WITH 20000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE doctorseq OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 26309)
+-- Name: exam; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE exam (
+    code bigint NOT NULL,
+    bookingdate timestamp without time zone,
+    examdate date NOT NULL,
+    doctor_code bigint,
+    examtypology_code bigint,
+    patient_code bigint,
+    result_code bigint
+);
+
+
+ALTER TABLE exam OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 26288)
+-- Name: examseq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE examseq
+    START WITH 40000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE examseq OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 26314)
+-- Name: examtypology; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE examtypology (
+    code bigint NOT NULL,
+    description character varying(255),
+    name character varying(255) NOT NULL,
+    price character varying(255)
+);
+
+
+ALTER TABLE examtypology OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 26322)
+-- Name: examtypology_prerequisite; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE examtypology_prerequisite (
+    examtypology_code bigint NOT NULL,
+    prerequisites_name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE examtypology_prerequisite OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 26325)
+-- Name: examtypology_resultindicator; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE examtypology_resultindicator (
+    examtypology_code bigint NOT NULL,
+    resultindicators_description character varying(255) NOT NULL
+);
+
+
+ALTER TABLE examtypology_resultindicator OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 26290)
+-- Name: examtypologyseq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE examtypologyseq
+    START WITH 50000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE examtypologyseq OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 26328)
+-- Name: patient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE patient (
+    code bigint NOT NULL,
+    address character varying(255) NOT NULL,
+    dateofbirth date NOT NULL,
+    name character varying(255) NOT NULL,
+    password character varying(255),
+    surname character varying(255) NOT NULL,
+    username character varying(255) NOT NULL
+);
+
+
+ALTER TABLE patient OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 26292)
+-- Name: patientseq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE patientseq
+    START WITH 30000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE patientseq OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 26336)
+-- Name: prerequisite; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE prerequisite (
+    name character varying(255) NOT NULL,
+    description character varying(255) NOT NULL
+);
+
+
+ALTER TABLE prerequisite OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 26344)
+-- Name: result; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE result (
+    code bigint NOT NULL,
+    exam_code bigint
+);
+
+
+ALTER TABLE result OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1259 OID 26349)
+-- Name: resultindicator; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE resultindicator (
+    description character varying(255) NOT NULL
+);
+
+
+ALTER TABLE resultindicator OWNER TO postgres;
+
+--
+-- TOC entry 195 (class 1259 OID 26354)
+-- Name: resultrow; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE resultrow (
+    id bigint NOT NULL,
+    value character varying(255) NOT NULL,
+    result_code bigint NOT NULL,
+    resultindicator character varying(255)
+);
+
+
+ALTER TABLE resultrow OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 26294)
+-- Name: resultseq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE resultseq
+    START WITH 60000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE resultseq OWNER TO postgres;
+
+--
+-- TOC entry 2184 (class 0 OID 26296)
+-- Dependencies: 185
+-- Data for Name: administrator; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY administrator (username, code, name, password, surname) FROM stdin;
+davCass	0	Davide	password	Cassetta
+marcoBra	0	Marco	cavallo	Bramini
+\.
+
+
+--
+-- TOC entry 2185 (class 0 OID 26304)
+-- Dependencies: 186
+-- Data for Name: doctor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY doctor (code, fieldofspecialization, name, surname) FROM stdin;
+20000	Cardiology	Simone	Fioroni
+20001	Oncology	Francesco	De Michelis
+20002	Orthopedy	Alberto	Marini
+20003	Odontology	Michele	Costanzi
+\.
+
+
+--
+-- TOC entry 2203 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: doctorseq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('doctorseq', 20003, true);
+
+
+--
+-- TOC entry 2186 (class 0 OID 26309)
+-- Dependencies: 187
+-- Data for Name: exam; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY exam (code, bookingdate, examdate, doctor_code, examtypology_code, patient_code, result_code) FROM stdin;
+40000	2016-06-15 19:28:26.264	1999-12-16	20000	50001	30000	60000
+40001	2016-06-15 19:28:26.264	1905-08-16	20001	50002	30001	\N
+40002	2016-06-15 19:28:26.264	1916-11-16	20000	50000	30002	60001
+\.
+
+
+--
+-- TOC entry 2204 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: examseq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('examseq', 40002, true);
+
+
+--
+-- TOC entry 2187 (class 0 OID 26314)
+-- Dependencies: 188
+-- Data for Name: examtypology; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY examtypology (code, description, name, price) FROM stdin;
+50000	Blood Analisis	BA	80.0€
+50001	Electrocardiogram	El	100.0€
+50002	computerized axial tomography	CAT	230.0€
+\.
+
+
+--
+-- TOC entry 2188 (class 0 OID 26322)
+-- Dependencies: 189
+-- Data for Name: examtypology_prerequisite; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY examtypology_prerequisite (examtypology_code, prerequisites_name) FROM stdin;
+50001	No Dia
+50002	No He
+50002	No Pre
+\.
+
+
+--
+-- TOC entry 2189 (class 0 OID 26325)
+-- Dependencies: 190
+-- Data for Name: examtypology_resultindicator; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY examtypology_resultindicator (examtypology_code, resultindicators_description) FROM stdin;
+50000	Emoglobina
+50000	Cholesterol
+50001	Beats per minute
+50001	Waves Electrocardiogram
+50002	CA 125
+\.
+
+
+--
+-- TOC entry 2205 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: examtypologyseq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('examtypologyseq', 50002, true);
+
+
+--
+-- TOC entry 2190 (class 0 OID 26328)
+-- Dependencies: 191
+-- Data for Name: patient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY patient (code, address, dateofbirth, name, password, surname, username) FROM stdin;
+30000	Viale Marconi 8	1963-12-22	Michela	1234	Gilda	michelaGild
+30001	Via dei Lucani 48	1967-06-22	Carmine	dkue8fw6	Pagnotto	carminePagn
+30002	Via Boccea 146	1990-07-15	Maurizio	sih5e1dsf9	Russo	maurizioRus
+30003	Via Cola Di Rienzo 68	1983-11-22	Marta	ef5sd7f9	Vinili	martaVin
+30004	Via Mattia Battistini 90	1972-01-10	Damiano	few4e8d	Pisano	damianoPis
+\.
+
+
+--
+-- TOC entry 2206 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: patientseq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('patientseq', 30004, true);
+
+
+--
+-- TOC entry 2191 (class 0 OID 26336)
+-- Dependencies: 192
+-- Data for Name: prerequisite; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY prerequisite (name, description) FROM stdin;
+No Pre	No Pregnant
+No He	No heart Problem
+No Dia	No diabetic
+No Th	No under other therapy
+\.
+
+
+--
+-- TOC entry 2192 (class 0 OID 26344)
+-- Dependencies: 193
+-- Data for Name: result; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY result (code, exam_code) FROM stdin;
+60000	40000
+60001	40002
+\.
+
+
+--
+-- TOC entry 2193 (class 0 OID 26349)
+-- Dependencies: 194
+-- Data for Name: resultindicator; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY resultindicator (description) FROM stdin;
+CA 125
+Cholesterol
+Waves Electrocardiogram
+Beats per minute
+Emoglobina
+\.
+
+
+--
+-- TOC entry 2194 (class 0 OID 26354)
+-- Dependencies: 195
+-- Data for Name: resultrow; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY resultrow (id, value, result_code, resultindicator) FROM stdin;
+0	40	60001	Emoglobina
+1	100	60001	Cholesterol
+0	50 bpm	60000	Beats per minute
+1	34,5	60000	Waves Electrocardiogram
+\.
+
+
+--
+-- TOC entry 2207 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: resultseq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('resultseq', 60001, true);
+
+
+--
+-- TOC entry 2035 (class 2606 OID 26303)
+-- Name: administrator_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY administrator
+    ADD CONSTRAINT administrator_pkey PRIMARY KEY (username);
+
+
+--
+-- TOC entry 2037 (class 2606 OID 26308)
+-- Name: doctor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY doctor
+    ADD CONSTRAINT doctor_pkey PRIMARY KEY (code);
+
+
+--
+-- TOC entry 2039 (class 2606 OID 26313)
+-- Name: exam_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT exam_pkey PRIMARY KEY (code);
+
+
+--
+-- TOC entry 2041 (class 2606 OID 26321)
+-- Name: examtypology_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY examtypology
+    ADD CONSTRAINT examtypology_pkey PRIMARY KEY (code);
+
+
+--
+-- TOC entry 2043 (class 2606 OID 26335)
+-- Name: patient_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY patient
+    ADD CONSTRAINT patient_pkey PRIMARY KEY (code);
+
+
+--
+-- TOC entry 2047 (class 2606 OID 26343)
+-- Name: prerequisite_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY prerequisite
+    ADD CONSTRAINT prerequisite_pkey PRIMARY KEY (name);
+
+
+--
+-- TOC entry 2049 (class 2606 OID 26348)
+-- Name: result_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY result
+    ADD CONSTRAINT result_pkey PRIMARY KEY (code);
+
+
+--
+-- TOC entry 2051 (class 2606 OID 26353)
+-- Name: resultindicator_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY resultindicator
+    ADD CONSTRAINT resultindicator_pkey PRIMARY KEY (description);
+
+
+--
+-- TOC entry 2053 (class 2606 OID 26361)
+-- Name: resultrow_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY resultrow
+    ADD CONSTRAINT resultrow_pkey PRIMARY KEY (id, result_code);
+
+
+--
+-- TOC entry 2045 (class 2606 OID 26363)
+-- Name: uk_ilrh6siryrwpd35ko2nwqo0pm; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY patient
+    ADD CONSTRAINT uk_ilrh6siryrwpd35ko2nwqo0pm UNIQUE (username);
+
+
+--
+-- TOC entry 2061 (class 2606 OID 26399)
+-- Name: fk17s7udsbecr0wh7fx0gj02ipi; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY examtypology_resultindicator
+    ADD CONSTRAINT fk17s7udsbecr0wh7fx0gj02ipi FOREIGN KEY (examtypology_code) REFERENCES examtypology(code);
+
+
+--
+-- TOC entry 2054 (class 2606 OID 26364)
+-- Name: fk2n5h1e2ycy2liy7avgc1qvydf; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT fk2n5h1e2ycy2liy7avgc1qvydf FOREIGN KEY (doctor_code) REFERENCES doctor(code);
+
+
+--
+-- TOC entry 2062 (class 2606 OID 26404)
+-- Name: fk69hhnqecvnt0rm06im4dynomv; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY result
+    ADD CONSTRAINT fk69hhnqecvnt0rm06im4dynomv FOREIGN KEY (exam_code) REFERENCES exam(code);
+
+
+--
+-- TOC entry 2057 (class 2606 OID 26379)
+-- Name: fk705jr5ex4egm01oupv4nepwt8; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT fk705jr5ex4egm01oupv4nepwt8 FOREIGN KEY (result_code) REFERENCES result(code);
+
+
+--
+-- TOC entry 2055 (class 2606 OID 26369)
+-- Name: fk8p9vk6i0yuak5st5h11oxf42f; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT fk8p9vk6i0yuak5st5h11oxf42f FOREIGN KEY (examtypology_code) REFERENCES examtypology(code);
+
+
+--
+-- TOC entry 2058 (class 2606 OID 26384)
+-- Name: fkatcbtjphcqd50im58n45efavw; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY examtypology_prerequisite
+    ADD CONSTRAINT fkatcbtjphcqd50im58n45efavw FOREIGN KEY (prerequisites_name) REFERENCES prerequisite(name);
+
+
+--
+-- TOC entry 2064 (class 2606 OID 26414)
+-- Name: fke9cunw25wpebr929cdq831scd; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY resultrow
+    ADD CONSTRAINT fke9cunw25wpebr929cdq831scd FOREIGN KEY (resultindicator) REFERENCES resultindicator(description);
+
+
+--
+-- TOC entry 2056 (class 2606 OID 26374)
+-- Name: fkedayby0xbdr31pohwfwrl2l6h; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY exam
+    ADD CONSTRAINT fkedayby0xbdr31pohwfwrl2l6h FOREIGN KEY (patient_code) REFERENCES patient(code);
+
+
+--
+-- TOC entry 2060 (class 2606 OID 26394)
+-- Name: fkj8fpsn4gfuacr0078ne7f9m8v; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY examtypology_resultindicator
+    ADD CONSTRAINT fkj8fpsn4gfuacr0078ne7f9m8v FOREIGN KEY (resultindicators_description) REFERENCES resultindicator(description);
+
+
+--
+-- TOC entry 2059 (class 2606 OID 26389)
+-- Name: fkol7yb7td5phig1ujmbr0reyqr; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY examtypology_prerequisite
+    ADD CONSTRAINT fkol7yb7td5phig1ujmbr0reyqr FOREIGN KEY (examtypology_code) REFERENCES examtypology(code);
+
+
+--
+-- TOC entry 2063 (class 2606 OID 26409)
+-- Name: fkshew4px6nys201sk44d0wvhyc; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY resultrow
+    ADD CONSTRAINT fkshew4px6nys201sk44d0wvhyc FOREIGN KEY (result_code) REFERENCES result(code);
+
+
+--
+-- TOC entry 2201 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-06-15 19:29:57
+
+--
+-- PostgreSQL database dump complete
+--
+
