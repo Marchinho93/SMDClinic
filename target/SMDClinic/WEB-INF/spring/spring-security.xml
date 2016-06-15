@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<global-method-security secured-annotations="enabled" pre-post-annotations="enabled" />
+
+	<http auto-config="true" use-expressions="true">
+<!-- 		<intercept-url pattern="/employee/*" access="ROLE_ADMIN" /> -->
+		<form-login login-processing-url="/login" login-page="/index"
+			username-parameter="username" password-parameter="password"
+			default-target-url="/loggedUserInit"
+			authentication-failure-url="/index?auth=fail" />
+		<logout logout-url="/logout" logout-success-url="/index" />
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="
+				SELECT v.username, v.password, 'true' as enabled
+				FROM (SELECT a.username, a.password FROM administrator a 
+					UNION 
+					SELECT p.username, p.password FROM patient p) v 
+				WHERE v.username=?"
+				authorities-by-username-query="
+				SELECT v.username, v.role 
+				FROM (SELECT a.username, 'admin' as role FROM administrator a 
+					UNION 
+					SELECT p.username, 'patient' as role FROM patient p) v 
+				WHERE v.username=?" />
+		</authentication-provider>
+	</authentication-manager>
+	
+</beans:beans>

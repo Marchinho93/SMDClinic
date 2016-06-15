@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<div class="row featurette">
+	<div class="col-md-12 col-sm-7">
+		<h2 class="featurette-heading">Add New Patientasdasdasd</h2>
+		<h:form styleClass="form container-fluid">
+			<div align="center" class="form-group">
+				<table>
+					<tr>
+						<td><label for="username">Username:</label></td>
+						<td><h:inputText styleClass="form-control input-sm"
+								value="#{loginController.username}" required="true"
+								requiredMessage="Insert username, please." id="username" /></td>
+					</tr>
+					<tr>
+						<h:message for="username" style="color:red" />
+					</tr>
+				</table>
+			</div>
+			<div align="center" class="form-group">
+				<table>
+					<tr>
+						<td><label for="password">Password:</label></td>
+						<td><h:inputSecret styleClass="form-control input-sm"
+								value="#{loginController.password}" required="true"
+								requiredMessage="Insert password, please." id="password" /></td>
+					</tr>
+					<tr>
+						<h:message for="password" style="color:red" />
+					</tr>
+				</table>
+			</div>
+			<li role="separator" class="divider"></li>
+
+			<h:commandButton styleClass="btn btn-default" value="Submit"
+				action="#{loginController.login}" />
+		</h:form>
+	</div>
+</div>
+</ui:composition>
